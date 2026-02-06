@@ -19,7 +19,7 @@ export const GET = async (req: NextRequest) => {
 			return ApiResponse(false, vm.notFound, 404)
 		}
 
-		return ApiResponse(true, vm.found, 200, customers,{total: customers.length})
+		return ApiResponse(true, vm.found, 200, customers, { total: customers.length })
 	} catch (error) {
 		console.log('error', error)
 		return ApiResponse(false, 'Internal server error', 500, [error])
@@ -36,7 +36,7 @@ export const POST = async (req: NextRequest) => {
 		const vm = customerApiData.create[lang]
 		const { name, email, phone, address } = await req.json()
 		if (!name) {
-			return ApiResponse(false, vm.requiredName, 400)
+			return ApiResponse(false, vm.requiredName, 400, [], { errors: { name: vm.requiredName } })
 		}
 
 		const customer = await prisma.customer.create({
